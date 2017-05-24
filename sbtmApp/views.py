@@ -5,3 +5,9 @@ def index(request):
 
 def startEngine(request):
     return render(request, 'startEngine.html', {})
+
+def previousTests(request):
+    return render(request, 'previousTests.html', {})
+
+def graphs(request):
+    return render(request, 'graphs.html', {})
