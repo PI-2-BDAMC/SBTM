@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <div class="inner cover">
+    <h1 class="cover-heading">Análises Anteriores</h1>
+    <p class="lead">A tabela abaixo apresenta as análises anteriores realizadas nesta bancada de testes e salvas pelo executor do teste em questão.</p>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Data/Hora</th>
+            <th>Duração</th>
+            <th>Vel. Máx.</th>
+            <th>RPM Máx.</th>
+            <th>Temp. Máx.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>14-03-2017</td>
+            <td>00:04:13</td>
+            <td>120</td>
+            <td>6.500</td>
+            <td>79</td>
+          </tr>
+          <tr>
+            <td>14-03-2017</td>
+            <td>00:04:13</td>
+            <td>120</td>
+            <td>6.500</td>
+            <td>79</td>
+          </tr>
+          <tr>
+            <td>14-03-2017</td>
+            <td>00:04:13</td>
+            <td>120</td>
+            <td>6.500</td>
+            <td>79</td>
+          </tr>
+          <tr>
+            <td>14-03-2017</td>
+            <td>00:04:13</td>
+            <td>120</td>
+            <td>6.500</td>
+            <td>79</td>
+          </tr>
+          <tr>
+            <td>14-03-2017</td>
+            <td>00:04:13</td>
+            <td>120</td>
+            <td>6.500</td>
+            <td>79</td>
+          </tr>
+          <tr>
+            <td>14-03-2017</td>
+            <td>00:04:13</td>
+            <td>120</td>
+            <td>6.500</td>
+            <td>79</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="lead">
+      <a href="{% url 'startEngine' %}" class="btn btn-success btn-lg">Iniciar Análise</a>
+    </p>
+  </div>
+
+{% endblock content %}
