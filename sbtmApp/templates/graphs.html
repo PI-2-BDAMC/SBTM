@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <div class="inner cover">
+    <h1 class="cover-heading">Teste</h1>
+    <p class="lead">Este é um teste em andamento.</p>
+    <div class="row">
+      <div class="col-sm-4">Velocímetro</div>
+      <div class="col-sm-4">RPM</div>
+      <div class="col-sm-4">Temperatura</div>
+    </div>
+    <p class="lead">
+      <a href="{% url 'startEngine' %}" class="btn btn-danger btn-lg">Encerrar Análise</a>
+    </p>
+  </div>
+
+{% endblock content %}
