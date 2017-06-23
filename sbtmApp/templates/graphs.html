@@ -5,7 +5,7 @@
    <div class="inner cover">
     <h1 class="cover-heading">Teste</h1>
 
-  <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+  <div id="container" style="min-width: 510px; height: 350px; margin: 0 auto; float: right;"></div>
 
   <script type="text/javascript">
     $(document).ready(function () {
@@ -84,7 +84,66 @@
 });
 </script>
 
+  <div style="width: 100px; height: 200px; margin: 0 auto">
+    <div id="container-rpm" style="width: 300px; height: 200px; float: right;"></div>
+  </div>
 
+  <script type="text/javascript">
+    var gaugeOptions = {
+
+    chart: {
+        type: 'solidgauge'
+    },
+
+    title: null,
+
+    pane: {
+        center: ['50%', '85%'],
+        size: '140%',
+        startAngle: -90,
+        endAngle: 90,
+        background: {
+            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+            innerRadius: '60%',
+            outerRadius: '100%',
+            shape: 'arc'
+        }
+    },
+
+    tooltip: {
+        enabled: false
+    },
+
+    // the value axis
+    yAxis: {
+        stops: [
+            [0.1, '#55BF3B'], // green
+            [0.5, '#DDDF0D'], // yellow
+            [0.9, '#DF5353'] // red
+        ],
+        lineWidth: 0,
+        minorTickInterval: null,
+        tickAmount: 2,
+        title: {
+            y: -70
+        },
+        labels: {
+            y: 16
+        }
+    },
+     plotOptions: {
+        solidgauge: {
+            dataLabels: {
+                y: 5,
+                borderWidth: 0,
+                useHTML: true
+            }
+        }
+    }
+  };
+
+
+  </script>
 
     <p class="lead">
       <a href="{% url 'startEngine' %}" class="btn btn-danger btn-lg">Encerrar Análise</a>
