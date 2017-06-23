@@ -11,7 +11,7 @@ def previousTests(request):
     return render(request, 'previousTests.html', {})
 
 def graphs(request):
-	sendMessage()
+	#sendMessage()
 	return render(request, 'graphs.html', {})
 
 def sendMessage():
