@@ -51,8 +51,13 @@
               <h3 class="masthead-brand">SBTM</h3>
               <nav>
                 <ul class="nav masthead-nav">
-                  <li class="active"><a href="{% url 'index' %}">Home</a></li>
+                  <li><a href="{% url 'index' %}">Home</a></li>
                   <li><a href="{% url 'previousTests' %}">Análises anteriores</a></li>
+                  <li><a href="{% url 'signup' %}">Cadastre-se</a></li>
+                  <li><a href="{% url 'signin' %}">Login</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% endif %}
                 </ul>
               </nav>
             </div>

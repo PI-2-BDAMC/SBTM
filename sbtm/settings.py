@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'sbtmApp',
+    'accounts',
 )
 
 MIDDLEWARE_CLASSES = (

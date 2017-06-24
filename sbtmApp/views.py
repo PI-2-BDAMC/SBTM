@@ -1,11 +1,15 @@
 from django.shortcuts import render_to_response, render
+from django.http import HttpResponseRedirect
 import socket
 
 def index(request):
     return render(request, 'index.html', {})
 
 def startEngine(request):
-    return render(request, 'startEngine.html', {})
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/signin/?next=%s' % request.path)
+    else:
+        return render(request, 'startEngine.html', {})
 
 def previousTests(request):
     return render(request, 'previousTests.html', {})
