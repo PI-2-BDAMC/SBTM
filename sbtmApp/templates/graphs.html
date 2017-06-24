@@ -2,152 +2,41 @@
 
 {% block content %}
 
-   <div class="inner cover">
-    <h1 class="cover-heading">Teste</h1>
+  <div class="panel panel-default">
+        <div id="chart_panel" class="panel-body" 
+            style="width:100%;height:314px"></div>
+</div>
 
-  <div id="container" style="min-width: 510px; height: 350px; margin: 0 auto; float: right;"></div>
+<script type="text/javascript">
+$(document).ready(function() {
 
-  <script type="text/javascript">
-    $(document).ready(function () {
-    Highcharts.setOptions({
-        global: {
-            useUTC: false
-        }
-    });
-
-    Highcharts.chart('container', {
+    // Glucose Average by Day chart
+     var avgByDayOptions = {
         chart: {
-            type: 'spline',
-            animation: Highcharts.svg, // don't animate in old IE
-            marginRight: 10,
-            events: {
-                load: function () {
+            renderTo: 'chart_panel',
+            type: 'line',
+        },
+        legend: {enabled: false},
+        title: {text: 'Temperatura por tempo'},
+        subtitle: {text: '-------'},
+        xAxis: {title: {text: null}, labels: {rotation: -45}},
+        yAxis: {title: {text: null}},
+        series: [{}],
+        
+    };
 
-                    // set up the updating of the chart each second
-                    var series = this.series[0];
-                    setInterval(function () {
-                        var x = (new Date()).getTime(), // current time
-                            y = Math.random() * 100;
-                        series.addPoint([x, y], true, true);
-                    }, 1000);
-                }
-            }
-        },
-        title: {
-            text: 'Temperatura do Motor em Relação ao Tempo'
-        },
-        xAxis: {
-            type: 'datetime',
-            tickPixelInterval: 150
-        },
-        yAxis: {
-            title: {
-                text: 'Temperatura ºC'
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        tooltip: {
-            formatter: function () {
-                return '<b>' + this.series.name + '</b><br/>' +
-                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                    Highcharts.numberFormat(this.y, 2);
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        exporting: {
-            enabled: false
-        },
-        series: [{
-            name: 'Temperatura Adquirida',
-            data: (function () {
-                // generate an array of random data
-                var data = [],
-                    time = (new Date()).getTime(),
-                    i;
-
-                for (i = -19; i <= 0; i += 1) {
-                    data.push({
-                        x: time + i * 1000,
-                        y: Math.random() * 100
-                    });
-                }
-                return data;
-            }())
-        }]
+    var chartDataUrl = "{% url 'chart_data_json' %}";
+    $.getJSON(chartDataUrl,
+        function(data) {
+            avgByDayOptions.xAxis.categories = data['chart_data']['times'];
+            avgByDayOptions.series[0].name = 'Temperatura do Motor (ºC)';
+            avgByDayOptions.series[0].data = data['chart_data']['values'];
+            var chart = new Highcharts.Chart(avgByDayOptions);
     });
-});
+
+} );
 </script>
+  
 
-  <div style="width: 100px; height: 200px; margin: 0 auto">
-    <div id="container-rpm" style="width: 300px; height: 200px; float: right;"></div>
-  </div>
-
-  <script type="text/javascript">
-    var gaugeOptions = {
-
-    chart: {
-        type: 'solidgauge'
-    },
-
-    title: null,
-
-    pane: {
-        center: ['50%', '85%'],
-        size: '140%',
-        startAngle: -90,
-        endAngle: 90,
-        background: {
-            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
-            innerRadius: '60%',
-            outerRadius: '100%',
-            shape: 'arc'
-        }
-    },
-
-    tooltip: {
-        enabled: false
-    },
-
-    // the value axis
-    yAxis: {
-        stops: [
-            [0.1, '#55BF3B'], // green
-            [0.5, '#DDDF0D'], // yellow
-            [0.9, '#DF5353'] // red
-        ],
-        lineWidth: 0,
-        minorTickInterval: null,
-        tickAmount: 2,
-        title: {
-            y: -70
-        },
-        labels: {
-            y: 16
-        }
-    },
-     plotOptions: {
-        solidgauge: {
-            dataLabels: {
-                y: 5,
-                borderWidth: 0,
-                useHTML: true
-            }
-        }
-    }
-  };
-
-
-  </script>
-
-    <p class="lead">
-      <a href="{% url 'startEngine' %}" class="btn btn-danger btn-lg">Encerrar Análise</a>
-    </p>
-  </div>
 
 {% endblock content %}

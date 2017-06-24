@@ -1,6 +1,8 @@
 from django.shortcuts import render_to_response, render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 import socket
+from .graphs import ChartData
+import json
 
 def index(request):
     return render(request, 'index.html', {})
@@ -30,4 +32,8 @@ def sendMessage():
 	data = sock.recv(BUFFER_SIZE)
 	sock.close()
 
+def chart_data_json(request):
+    data = {}
+    data['chart_data'] = ChartData.get_temperature_sensor_data(request.user)
 
+    return HttpResponse(json.dumps(data), content_type='application/json')
