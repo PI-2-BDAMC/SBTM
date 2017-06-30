@@ -23,18 +23,18 @@ class TemperatureSensor(models.Model):
 	def __str__(self):
 		return str(round(self.valueTemperature, 2))
 
-class PressionSensor(models.Model):
+class PressureSensor(models.Model):
 	"""docstring for Pression"""
 
-	benchTest = models.ForeignKey('BenchTest', on_delete=models.CASCADE, db_index=True, db_tablespace="indexes")
-	valuePression = models.FloatField(blank=False, db_index=True, db_tablespace="indexes")
+	benchTest = models.ForeignKey(BenchTest, on_delete=models.CASCADE, db_index=True, db_tablespace="indexes")
+	valuePressure = models.FloatField(blank=False, db_index=True, db_tablespace="indexes")
 	date = models.DateTimeField(default=datetime.now, blank=False, db_index=True, db_tablespace="indexes")
-
+	localSensor = models.IntegerField(default=0, blank=False, db_index=True, db_tablespace="indexes")
 
 class RpmSensor(models.Model):
 	"""docstring for ClassName"""
 
-	benchTest = models.ForeignKey('BenchTest', on_delete=models.CASCADE, db_index=True, db_tablespace="indexes")
+	benchTest = models.ForeignKey(BenchTest, on_delete=models.CASCADE, db_index=True, db_tablespace="indexes")
 	valueRPM = models.FloatField(blank=False, db_index=True, db_tablespace="indexes")
 	date = models.DateTimeField(default=datetime.now, blank=False, db_index=True, db_tablespace="indexes")
 	

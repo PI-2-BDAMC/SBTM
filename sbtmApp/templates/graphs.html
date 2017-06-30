@@ -14,29 +14,44 @@ $(document).ready(function() {
      var avgByDayOptions = {
         chart: {
             renderTo: 'chart_panel',
-            type: 'line',
+            type: 'spline',
+            events: {
+                load: function () {
+
+                    // set up the updating of the chart each second
+                    var series = this.series[0];
+                    var chartDataUrl = "{% url 'chart_data_json' %}";
+                    setInterval(function () {
+                        $.getJSON(chartDataUrl,
+                        function(data) {
+
+                            series.addPoint(data['chart_data']['values'][-1], data['chart_data']['values'][-1], true, true);
+                        });
+
+                    }, 1000);
+                }
+            }
         },
         legend: {enabled: false},
-        title: {text: 'Temperatura por tempo'},
-        subtitle: {text: '-------'},
+        title: {text: 'Temperatura do Motor'},
         xAxis: {title: {text: null}, labels: {rotation: -45}},
         yAxis: {title: {text: null}},
         series: [{}],
-        
     };
 
     var chartDataUrl = "{% url 'chart_data_json' %}";
     $.getJSON(chartDataUrl,
-        function(data) {
-            avgByDayOptions.xAxis.categories = data['chart_data']['times'];
-            avgByDayOptions.series[0].name = 'Temperatura do Motor (ºC)';
-            avgByDayOptions.series[0].data = data['chart_data']['values'];
-            var chart = new Highcharts.Chart(avgByDayOptions);
+    function(data) {
+        avgByDayOptions.xAxis.categories = data['chart_data']['times'];
+        avgByDayOptions.series[0].name = 'Temperatura do Motor (ºC)';
+        avgByDayOptions.series[0].data = data['chart_data']['values'];
+
+        var chart = new Highcharts.Chart(avgByDayOptions);
     });
 
 } );
 </script>
-  
+
 
 
 {% endblock content %}
