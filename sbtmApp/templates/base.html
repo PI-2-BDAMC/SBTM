@@ -53,10 +53,12 @@
                 <ul class="nav masthead-nav">
                   <li><a href="{% url 'index' %}">Home</a></li>
                   <li><a href="{% url 'previousTests' %}">Análises anteriores</a></li>
-                  <li><a href="{% url 'signup' %}">Cadastre-se</a></li>
-                  <li><a href="{% url 'signin' %}">Login</a></li>
                     {% if user.is_authenticated %}
+                        <li><a><font color="#66ff33"> Olá, {{ user.get_username }} </font></a>
                         <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'signin' %}">Login</a></li>
+                        <li><a href="{% url 'signup' %}">Cadastre-se</a></li>
                     {% endif %}
                 </ul>
               </nav>
