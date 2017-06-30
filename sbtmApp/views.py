@@ -19,9 +19,9 @@ def previousTests(request):
     return render(request, 'previousTests.html', {})
 
 def graphs(request):
-	#sendMessage()
-	#test = BenchTest(userBenchTest=request.user)
-	#test.save()
+	sendMessage()
+	test = BenchTest(userBenchTest=request.user)
+	test.save()
 	rd = Recorder()
 	rd.aquisition(request.user)
 	return render(request, 'graphs.html', {})
