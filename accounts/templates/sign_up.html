@@ -3,9 +3,11 @@
 {% block content %}
 <center>
 	<form method="POST">
-		{% csrf_token %}
-		{{ form.as_p }}
-		<input type='submit' value='Sign up' />
+		<div align="left">
+			{% csrf_token %}
+			{{ form.as_p }}
+		</div>
+		<input type='button' class="btn btn-primary" value='Sign up' />
 	</form>	
 </center>
 {% endblock %}
