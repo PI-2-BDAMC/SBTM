@@ -11,13 +11,7 @@
     </div>
 </div>
 <br>
-<div id="chart-container">FusionCharts XT will load here!</div>
-
-<script type="text/javascript" src="http://static.fusioncharts.com/code/latest/fusioncharts.js"></script>
-<script type="text/javascript" src="http://static.fusioncharts.com/code/latest/themes/fusioncharts.theme.fint.js?cacheBust=56"></script>
-
-<script type="text/javascript" src="{{STATIC_URL|default:"/static/"}}/js/fusioncharts.js"></script>
- <script type="text/javascript" src="{{STATIC_URL|default:"/static/"}}/js/fusioncharts.theme.fint.js"></script>
+<div id="chart-container"></div>
 
 <script type="text/javascript">
 
@@ -125,7 +119,7 @@ Highcharts.chart('container', {
     // the value axis
     yAxis: {
         min: 0,
-        max: 80,
+        max: 8,
 
         minorTickInterval: 'auto',
         minorTickWidth: 1,
@@ -147,22 +141,25 @@ Highcharts.chart('container', {
         },
         plotBands: [{
             from: 0,
-            to: 50,
+            to: 5,
             color: '#55BF3B' // green
         }, {
-            from: 50,
-            to: 70,
+            from: 5,
+            to: 7,
             color: '#DDDF0D' // yellow
         }, {
-            from: 70,
-            to: 80,
+            from: 7,
+            to: 8,
             color: '#DF5353' // red
         }]
     },
 
     series: [{
         name: 'RPM',
-        data: [10],
+        data: [1],
+        tooltip: {
+            valueSuffix: ' x1000'
+        }
     }]
 
 },
@@ -292,13 +289,6 @@ function (chart) {
 );
     fusioncharts.render();
 });
-
-
-
-
-
-
-
 
 </script>
 

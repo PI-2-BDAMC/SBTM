@@ -22,7 +22,7 @@ def graphs(request):
 	#sendMessage()
 	#test = BenchTest(userBenchTest=request.user)
 	#test.save()
-	return render(request, 'graphs.html', {})
+  return render(request, 'graphs.html', {})
 
 def sendMessage():
 
@@ -57,3 +57,5 @@ def data_from_sensors(request):
     if request.method == "GET":
       rd = Recorder()
       rd.aquisition(request.user)
+
+    return HttpResponse(json.dumps(" "), content_type='application/json')

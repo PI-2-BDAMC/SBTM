@@ -5,7 +5,7 @@ class Recorder(object):
 
 	def aquisition(self, user):
 
-	    UDP_IP_SERVER = "192.168.10.122"
+	    UDP_IP_SERVER = "192.168.0.103"
 	    UDP_PORT = 5005
 
 	    sock = socket.socket(socket.AF_INET, # Internet
@@ -17,16 +17,19 @@ class Recorder(object):
 
 	    while True:
 	        data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-	        print addr
 	        self.createSensorObjects(data, user)
 
 	def createSensorObjects(self, data_from_rasp, user):
 
 		benchtests = BenchTest.objects.filter(userBenchTest = user)
 		benchtest = benchtests.last()
-		sensor_id = int(data_from_rasp[0])
+		sensor_id = int(data_from_rasp[0:2].strip(" "))
 
 		if  sensor_id in range(0, 5):
 			value = data_from_rasp.strip(str(sensor_id)).strip(".").strip(" ")
-			print(value + "#######################################")
-			#benchtest.pressuresensor_set.create(valuePressure=value, localSensor=sensor_id)
+			benchtest.pressuresensor_set.create(valuePressure=value, localSensor=sensor_id)
+
+		elif sensor_id in range(6, 11):
+			value = data_from_rasp.strip(str(sensor_id)).strip(".").strip(" ")
+			benchtest.temperaturesensor_set.create(valuePressure=value, localSensor=sensor_id)
+			
