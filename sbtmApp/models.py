@@ -43,4 +43,14 @@ class RpmSensor(models.Model):
 
 	def __str__(self):
 		return str(self.valueRPM)
+
+class LoadCell(models.Model):
+	"""docstring for ClassName"""
+
+	benchTest = models.ForeignKey(BenchTest, on_delete=models.CASCADE, db_index=True, db_tablespace="indexes")
+	valueCharge = models.FloatField(blank=False, db_index=True, db_tablespace="indexes")
+	date = models.DateTimeField(default=datetime.now, blank=False, db_index=True, db_tablespace="indexes")
+
+	def __str__(self):
+		return str(self.valueCharge)
 	
