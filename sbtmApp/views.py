@@ -19,11 +19,9 @@ def previousTests(request):
     return render(request, 'previousTests.html', {})
 
 def graphs(request):
-	sendMessage()
-	test = BenchTest(userBenchTest=request.user)
-	test.save()
-	rd = Recorder()
-	rd.aquisition(request.user)
+	#sendMessage()
+	#test = BenchTest(userBenchTest=request.user)
+	#test.save()
 	return render(request, 'graphs.html', {})
 
 def sendMessage():
@@ -42,7 +40,12 @@ def sendMessage():
   print "received data:", data
 
 def chart_data_json(request):
-    data = {}
-    data['chart_data'] = ChartData.get_temperature_sensor_data(request.user)
+    data = ChartData.get_temperature_sensor_data(request.user)
 
     return HttpResponse(json.dumps(data), content_type='application/json')
+
+def data_from_sensors(request):
+
+    if request.method == "GET":
+      rd = Recorder()
+      rd.aquisition(request.user)

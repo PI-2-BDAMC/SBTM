@@ -17,5 +17,6 @@ urlpatterns = [
     url(r'^graphs/', sbtmApp.views.graphs, name="graphs"),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'^chart_data_json/$', sbtmApp.views.chart_data_json, name='chart_data_json'),
+    url(r'^data_from_sensors/$', sbtmApp.views.data_from_sensors, name='data_from_sensors'),
 
 ]

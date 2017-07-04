@@ -8,45 +8,51 @@
 </div>
 
 <script type="text/javascript">
-$(document).ready(function() {
 
-    // Glucose Average by Day chart
-     var avgByDayOptions = {
-        chart: {
-            renderTo: 'chart_panel',
-            type: 'spline',
-            events: {
-                load: function () {
+var chart;
 
-                    // set up the updating of the chart each second
-                    var series = this.series[0];
-                    var chartDataUrl = "{% url 'chart_data_json' %}";
-                    setInterval(function () {
-                        $.getJSON(chartDataUrl,
-                        function(data) {
-
-                            series.addPoint(data['chart_data']['values'][-1], data['chart_data']['values'][-1], true, true);
-                        });
-
-                    }, 1000);
-                }
-            }
-        },
-        legend: {enabled: false},
-        title: {text: 'Temperatura do Motor'},
-        xAxis: {title: {text: null}, labels: {rotation: -45}},
-        yAxis: {title: {text: null}},
-        series: [{}],
-    };
-
+function requestData() {
     var chartDataUrl = "{% url 'chart_data_json' %}";
     $.getJSON(chartDataUrl,
     function(data) {
-        avgByDayOptions.xAxis.categories = data['chart_data']['times'];
-        avgByDayOptions.series[0].name = 'Temperatura do Motor (ºC)';
-        avgByDayOptions.series[0].data = data['chart_data']['values'];
 
-        var chart = new Highcharts.Chart(avgByDayOptions);
+        chart.series[0].addPoint([new Date().getTime(), data], true, false);  
+
+    });
+
+    setTimeout(requestData, 1000);
+}
+
+$(document).ready(function() {
+
+    $.get( "{% url 'data_from_sensors' %}", function() {
+      console.log("sucess");
+    })
+
+   chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'chart_panel',
+            defaultSeriesType: 'spline',
+            events: {
+                load: requestData
+            }
+        },
+        title: {
+            text: 'Sensores de Temperatura X Tempo'
+        },
+        xAxis: {
+            type: 'datetime',
+            tickPixelInterval: 150,
+            maxZoom: 20 * 1000
+        },
+        yAxis: {
+            title: {text: null}, 
+            labels: {rotation: -45}
+        },
+        series: [{
+            name: 'Temperatura em Cº',
+            data: []
+        }]
     });
 
 } );

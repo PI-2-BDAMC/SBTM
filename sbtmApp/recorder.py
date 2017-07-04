@@ -5,12 +5,13 @@ class Recorder(object):
 
 	def aquisition(self, user):
 
-	    UDP_IP_SERVER = "192.168.0.31"
-	    UDP_IP = "192.168.0.39"
+	    UDP_IP_SERVER = "192.168.10.122"
 	    UDP_PORT = 5005
-	    
+
 	    sock = socket.socket(socket.AF_INET, # Internet
 	                         socket.SOCK_DGRAM) # UDP
+
+	    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 	    sock.bind((UDP_IP_SERVER, UDP_PORT))
 
