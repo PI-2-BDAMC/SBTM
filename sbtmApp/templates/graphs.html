@@ -2,17 +2,22 @@
 
 {% block content %}
 
-  <div class="panel panel-default">
-        <div id="chart_panel" class="panel-body" 
-            style="width:100%;height:314px"></div>
+<div id="container" style="min-width: 310px; max-width: 400px; height: 300px; margin: 0 auto;">
+</div>
+<br>
+<div class="panel panel-default">
+    <div id="chart_panel" class="panel-body" 
+        style="width:100%;height:314px">
+    </div>
 </div>
 
 <script type="text/javascript">
 
-var chart;
+var chart,
+    chart2;
 
 function requestData() {
-    var chartDataUrl = "{% url 'chart_data_json' %}";
+    var chartDataUrl = "{% url 'chart_data_json' %}" + '?name=tmp_sensor';
     $.getJSON(chartDataUrl,
     function(data) {
 
@@ -56,6 +61,126 @@ $(document).ready(function() {
     });
 
 } );
+
+
+
+
+
+
+Highcharts.chart('container', {
+
+    chart: {
+        type: 'gauge',
+        plotBackgroundColor: null,
+        plotBackgroundImage: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+
+    title: {
+        text: 'Medidor de RPM'
+    },
+
+    pane: {
+        startAngle: -150,
+        endAngle: 150,
+        background: [{
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#FFF'],
+                    [1, '#333']
+                ]
+            },
+            borderWidth: 0,
+            outerRadius: '109%'
+        }, {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#333'],
+                    [1, '#FFF']
+                ]
+            },
+            borderWidth: 1,
+            outerRadius: '107%'
+        }, {
+            // default background
+        }, {
+            backgroundColor: '#DDD',
+            borderWidth: 0,
+            outerRadius: '105%',
+            innerRadius: '103%'
+        }]
+    },
+
+    // the value axis
+    yAxis: {
+        min: 0,
+        max: 80,
+
+        minorTickInterval: 'auto',
+        minorTickWidth: 1,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 10,
+        tickColor: '#666',
+        labels: {
+            step: 2,
+            rotation: 'auto'
+        },
+        title: {
+            text: 'RPM x1000'
+        },
+        plotBands: [{
+            from: 0,
+            to: 50,
+            color: '#55BF3B' // green
+        }, {
+            from: 50,
+            to: 70,
+            color: '#DDDF0D' // yellow
+        }, {
+            from: 70,
+            to: 80,
+            color: '#DF5353' // red
+        }]
+    },
+
+    series: [{
+        name: 'RPM',
+        data: [80],
+    }]
+
+},
+
+function (chart) {
+
+    var newVal;
+
+    if (!chart.renderer.forExport) {
+        setInterval(function () {
+            var point = chart.series[0].points[0],
+                chartDataUrl = "{% url 'chart_data_json' %}" + '?name=rpm_sensor';
+
+                $.getJSON(chartDataUrl,
+                function(data) {
+
+                    newVal = data  
+
+                });
+
+            point.update(newVal);
+
+        }, 1000);
+    }
+});
+
 </script>
 
 

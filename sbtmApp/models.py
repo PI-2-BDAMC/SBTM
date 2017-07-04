@@ -31,10 +31,16 @@ class PressureSensor(models.Model):
 	date = models.DateTimeField(default=datetime.now, blank=False, db_index=True, db_tablespace="indexes")
 	localSensor = models.IntegerField(default=0, blank=False, db_index=True, db_tablespace="indexes")
 
+	def __str__(self):
+		return str(round(self.valuePressure, 2))
+
 class RpmSensor(models.Model):
 	"""docstring for ClassName"""
 
 	benchTest = models.ForeignKey(BenchTest, on_delete=models.CASCADE, db_index=True, db_tablespace="indexes")
 	valueRPM = models.FloatField(blank=False, db_index=True, db_tablespace="indexes")
 	date = models.DateTimeField(default=datetime.now, blank=False, db_index=True, db_tablespace="indexes")
+
+	def __str__(self):
+		return str(self.valueRPM)
 	
