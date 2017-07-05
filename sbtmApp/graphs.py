@@ -39,7 +39,7 @@ class ChartData(object):
     	now = datetime.now()
     	earlier = now - timedelta(seconds=30)
 
-    	cell_data_1 = 0
+    	cell_data_1 = benchtests.last().loadcell_set.filter(date__range =(earlier,now)).first().valueCharge
 
     	cell_data_2 = benchtests.last().loadcell_set.last().valueCharge
 
