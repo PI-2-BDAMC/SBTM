@@ -11,23 +11,43 @@
     </div>
 </div>
 <br>
+<div class="panel panel-default">
+    <div id="chart_panel2" class="panel-body" 
+        style="width:100%;height:314px">
+    </div>
+</div>
+<br>
 <div id="chart-container"></div>
 
 <script type="text/javascript">
 
 var chart,
-    chart2;
+    chart2,
+    chart3;
 
-function requestData() {
-    var chartDataUrl = "{% url 'chart_data_json' %}" + '?name=tmp_sensor';
+function requestTemperatureData() {
+    var chartDataUrl = "{% url 'chart_data_json' %}" + '?name=admission_temperature';
     $.getJSON(chartDataUrl,
     function(data) {
 
-        chart.series[0].addPoint([new Date().getTime(), data], true, false);  
+        chart.series[0].addPoint([new Date().getTime(), data[0]], true, false);
+        chart.series[1].addPoint([new Date().getTime(), data[1]], true, false);  
 
     });
 
-    setTimeout(requestData, 1000);
+    setTimeout(requestTemperatureData, 1000);
+}
+
+function requestFuelData() {
+    var chartDataUrl = "{% url 'chart_data_json' %}" + '?name=fuel_comsumption';
+    $.getJSON(chartDataUrl,
+    function(data) {
+
+        chart2.series[0].addPoint([new Date().getTime(), data], true, false);  
+
+    });
+
+    setTimeout(requestFuelData, 1000);
 }
 
 $(document).ready(function() {
@@ -41,11 +61,11 @@ $(document).ready(function() {
             renderTo: 'chart_panel',
             defaultSeriesType: 'spline',
             events: {
-                load: requestData
+                load: requestTemperatureData
             }
         },
         title: {
-            text: 'Sensores de Temperatura X Tempo'
+            text: 'Temperatura Arrefecimento X Tempo'
         },
         xAxis: {
             type: 'datetime',
@@ -57,14 +77,43 @@ $(document).ready(function() {
             labels: {rotation: -45}
         },
         series: [{
-            name: 'Temperatura em Cº',
+            name: 'Temperatura Entrada Arrefecimento',
+            data: []
+        }, {
+            name: 'Temperatura Saída Arrefecimento',
+            data: []
+        }]
+
+    });
+
+
+   chart2 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'chart_panel2',
+            defaultSeriesType: 'spline',
+            events: {
+                load: requestFuelData
+            }
+        },
+        title: {
+            text: 'Consumo de Combustível X Tempo'
+        },
+        xAxis: {
+            type: 'datetime',
+            tickPixelInterval: 150,
+            maxZoom: 20 * 1000
+        },
+        yAxis: {
+            title: {text: null}, 
+            labels: {rotation: -45}
+        },
+        series: [{
+            name: 'Consumo em L/min',
             data: []
         }]
     });
 
 } );
-
-
 
 
 
