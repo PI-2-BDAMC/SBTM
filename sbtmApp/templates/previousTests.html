@@ -2,69 +2,47 @@
 
 {% block content %}
 
-  <div class="inner cover">
-    <h1 class="cover-heading">Análises Anteriores</h1>
-    <p class="lead">A tabela abaixo apresenta as análises anteriores realizadas nesta bancada de testes e salvas pelo executor do teste em questão.</p>
-    <div class="table-responsive">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Data/Hora</th>
-            <th>Duração</th>
-            <th>Vel. Máx.</th>
-            <th>RPM Máx.</th>
-            <th>Temp. Máx.</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>14-03-2017</td>
-            <td>00:04:13</td>
-            <td>120</td>
-            <td>6.500</td>
-            <td>79</td>
-          </tr>
-          <tr>
-            <td>14-03-2017</td>
-            <td>00:04:13</td>
-            <td>120</td>
-            <td>6.500</td>
-            <td>79</td>
-          </tr>
-          <tr>
-            <td>14-03-2017</td>
-            <td>00:04:13</td>
-            <td>120</td>
-            <td>6.500</td>
-            <td>79</td>
-          </tr>
-          <tr>
-            <td>14-03-2017</td>
-            <td>00:04:13</td>
-            <td>120</td>
-            <td>6.500</td>
-            <td>79</td>
-          </tr>
-          <tr>
-            <td>14-03-2017</td>
-            <td>00:04:13</td>
-            <td>120</td>
-            <td>6.500</td>
-            <td>79</td>
-          </tr>
-          <tr>
-            <td>14-03-2017</td>
-            <td>00:04:13</td>
-            <td>120</td>
-            <td>6.500</td>
-            <td>79</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="container">
+    <div class="inner cover">
+      <h1 class="cover-heading">Análises Anteriores</h1>
+      {% if ensaios %}
+        <p class="lead">
+          A tabela abaixo apresenta as análises de seus ensaios anteriores realizadas nesta bancada.
+          <br>
+          Para acessar mais informações a respeito de determinado teste clique no identificador correspondente.
+        </p>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>Descrição</th>
+                <th>Data</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for ensaio in ensaios %}
+                <tr>
+                  <th> <a href="{% url 'reports' %}?id={{ ensaio.id }}&descricao={{ ensaio.descricao }}&dateBenchTest={{ ensaio.dateBenchTest }}" >{{ ensaio.id }}</a></th>
+                  <th> {{ ensaio.descricao}}</th>
+                  <th> {{ ensaio.dateBenchTest }}</th>
+                </tr> 
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="lead">Você não realizou nenhum teste até o momento.</p>
+      {% endif %}
+      
+      <p class="lead">
+        <a href="{% url 'startEngine' %}" class="btn btn-success btn-lg">Iniciar Análise</a>
+      </p>
     </div>
-    <p class="lead">
-      <a href="{% url 'startEngine' %}" class="btn btn-success btn-lg">Iniciar Análise</a>
-    </p>
   </div>
+
+<table>
+
+</table>
 
 {% endblock content %}

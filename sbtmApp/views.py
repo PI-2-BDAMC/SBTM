@@ -16,7 +16,12 @@ def startEngine(request):
         return render(request, 'startEngine.html', {})
 
 def previousTests(request):
-    return render(request, 'previousTests.html', {})
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/signin/?next=%s' % request.path)
+    else:
+        ensaios = BenchTest.objects.filter(userBenchTest = request.user)
+
+        return render(request, 'previousTests.html', {'ensaios':ensaios})
 
 def graphs(request):
 	#sendMessage()
@@ -59,3 +64,13 @@ def data_from_sensors(request):
       rd.aquisition(request.user)
 
     return HttpResponse(json.dumps(" "), content_type='application/json')
+
+def reports(request):
+    
+    data = []
+    params = request.GET
+    identifier = params.get('id', '')
+    descricao = params.get('descricao', '')
+    dateBenchTest = params.get('dateBenchTest', '')
+
+    return render(request, 'reports.html', {'identifier':identifier, 'descricao':descricao, 'dateBenchTest':dateBenchTest})
