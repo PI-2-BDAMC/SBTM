@@ -1,5 +1,6 @@
 from .models import BenchTest
 from datetime import datetime, timedelta
+from math import sqrt
 
 class ChartData(object):
 
@@ -47,4 +48,29 @@ class ChartData(object):
 
     	data = fuel_comsumption
 
-    	return data
+    	return round(data, 2)
+
+    @classmethod
+    def get_air_comsumption(cls, user):
+        benchtests = BenchTest.objects.filter(userBenchTest = user)
+        
+        admission_temperature = benchtests.last().temperaturesensor_set.last().valueTemperature
+        admission_pressure1 = benchtests.last().pressuresensor_set.filter(localSensor=2).last().valuePressure
+        admission_pressure2 = benchtests.last().pressuresensor_set.filter(localSensor=3).last().valuePressure
+
+        pCaixa = (admission_pressure1*10000)/101.308
+        pAtm = (admission_pressure2*10000)/101.308
+
+        pAtm2 = admission_pressure2/101.308
+
+        dh = pAtm - pCaixa
+
+        pB = pAtm2
+
+        tbb = admission_temperature
+
+
+        car = 121.06*sqrt((dh*pB)/(10*(tbb+273)))
+
+
+        return round(car, 2)

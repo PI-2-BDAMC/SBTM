@@ -61,6 +61,9 @@ def chart_data_json(request):
     elif name == 'admission_temperature':
       data = ChartData.get_admission_temperature(request.user)
 
+    elif name == 'pressure_sensor':
+      data = ChartData.get_air_comsumption(request.user)
+
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 def data_from_sensors(request):
