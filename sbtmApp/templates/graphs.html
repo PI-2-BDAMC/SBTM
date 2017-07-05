@@ -21,7 +21,7 @@
         </div>
         <div class="col-xs-6 col-md-4">
             <a href="#" class="thumbnail">
-              <div id="chart-container"></div>
+              <div id="container1"></div>
             </a>
         </div>
     </div>
@@ -49,14 +49,19 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-xs-6 col-md-6">
+        <div class="col-xs-6 col-md-4">
             <p class="lead">
                 <a href="{% url 'previousTests' %}" class="btn btn-primary btn-lg">Acelerar Motor</a>
             </p>
         </div>
-        <div class="col-xs-6 col-md-6">
+        <div class="col-xs-6 col-md-4">
             <p class="lead">
                 <a href="{% url 'previousTests' %}" class="btn btn-warning btn-lg">Desacelerar Motor</a>
+            </p>
+        </div>
+        <div class="col-xs-6 col-md-4">
+            <p class="lead">
+                <a href="{% url 'previousTests' %}" class="btn btn-default btn-lg">Desacelerar Tudo</a>
             </p>
         </div>
     </div>
@@ -320,109 +325,74 @@ function (chart) {
     }
 });
 
-
-  FusionCharts.ready(function(){
-    var fusioncharts = new FusionCharts({
-    type: 'thermometer',
-    renderAt: 'chart-container',
-    id: 'myThm',
-    width: '240',
-    height: '310',
-    dataFormat: 'json',
-    dataSource: {
-        "chart": {
-            "caption": "Temperatura do motor",
-           // "subcaption": " Central cold store",
-            "lowerLimit": "-10",
-            "upperLimit": "0",
-
-            "decimals": "1",
-            "numberSuffix": "°C",
-            "showhovereffect": "1",
-            "thmFillColor": "#008ee4",
-            "showGaugeBorder": "1",
-            "gaugeBorderColor": "#008ee4",
-            "gaugeBorderThickness": "2",
-            "gaugeBorderAlpha": "30",
-            "thmOriginX": "100",
-            "chartBottomMargin": "20",
-            "valueFontColor": "#000000",
-            "theme": "fint"
-        },
-        "value": "-6",
-        //All annotations are grouped under this element
-        "annotations": {
-            "showbelow": "0",
-            "groups": [{
-                //Each group needs a unique ID
-                "id": "indicator",
-                "items": [
-                    //Showing Annotation
-                    {
-                        "id": "background",
-                        //Rectangle item
-                        "type": "rectangle",
-                        "alpha": "50",
-                        "fillColor": "#AABBCC",
-                        "x": "$gaugeEndX-40",
-                        "tox": "$gaugeEndX",
-                        "y": "$gaugeEndY+54",
-                        "toy": "$gaugeEndY+72"
-                    }
-                ]
-            }]
-
-        },
+//var chartDataUrl = "{% url 'chart_data_json' %}" + '?name=tmp_sensor';
+$('#container1').highcharts({
+    chart: {
+        marginBottom: 50
     },
-    "events": {
-        "initialized": function(evt, arg) {
-            var value;
-            evt.sender.dataUpdate = setInterval(function() {
-                var chartDataUrl = "{% url 'chart_data_json' %}" + '?name=tmp_sensor';
-                
-                $.getJSON(chartDataUrl,
-                function(data) {
-
-                    value = data;  
-
-                });
-
-                evt.sender.feedData("&value=" + value);
-
-            }, 1000);
-            updateAnnotation = function(evtObj, argObj) {
-                var code,
-                    chartObj = evtObj.sender,
-                    val = chartObj.getData(),
-                    annotations = chartObj.annotations;
-
-                if (val >= -4.5) {
-                    code = "#00FF00";
-                } else if (val < -4.5 && val > -6) {
-                    code = "#ff9900";
-                } else {
-                    code = "#ff0000";
-                }
-                annotations.update("background", {
-                    "fillColor": code
-                });
-            };
+    series: [{
+        data: [12],
+        type: 'column',
+        pointWidth: 20,
+        threshold: -40,
+        borderWidth: 0,
+        name: 'Temp'
+    }],
+    credits: {
+        enabled: false
+    },
+    legend: {
+        enabled: false
+    },
+    xAxis: {
+        title: {
+            text: 'ºC'
         },
-        'renderComplete': function(evt, arg) {
-            updateAnnotation(evt, arg);
+        labels: {
+            enabled: false
         },
-        'realtimeUpdateComplete': function(evt, arg) {
-            updateAnnotation(evt, arg);
+        lineWidth: 0,
+        tickWidth: 0
+    },
+    yAxis: {
+        min: 0,
+        max: 400,
+        minPadding: 0,
+        maxPadding: 0,
+        startOnTick: false,
+        endOnTick: false,
+        title: {
+            text: 'Temperatura em ºC'
         },
-        'disposed': function(evt, arg) {
-            clearInterval(evt.sender.dataUpdate);
-        }
+        tickInterval: 5,
+        minorTickInterval: 1,
+        gridLineWidth: 0,
+        minorGridLineWidth: 0,
+        tickWidth: 1,
+        minorTickWidth: 1
+    },
+    title: {
+        text: 'Temperatura do escapamento'
     }
-}
 
-);
-    fusioncharts.render();
+}, function (chart) {
+    // Draw the shape
+    var series;
+    chart.series[0],
+        point = series.points[0],
+        radius = 20;
+    chart.renderer.circle(
+        chart.plotLeft + point.shapeArgs.x + (point.shapeArgs.width / 2), 
+        chart.plotTop + series.yAxis.len + radius - 5, 
+        20
+    )
+    .attr({
+        fill: series.color
+    })
+    .add();
+    
 });
+
 
 </script>
 
