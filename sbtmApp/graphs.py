@@ -74,3 +74,16 @@ class ChartData(object):
 
 
         return round(car, 2)
+
+    @classmethod
+    def get_pressure_sensor_0_data(cls, user, test_id):
+        benchtests = BenchTest.objects.filter(userBenchTest = user)
+        benchtest = benchtests.get(id=test_id)
+        sensor_temperatures = benchtest.pressuresensor_set.filter(localSensor = 6).all()
+
+        data = {'times': [], 'values': []}
+        for temp in sensor_temperatures:
+            data['times'].append(temp.date.strftime('%X'))
+            data['values'].append(temp.valuePressure)
+
+        return data

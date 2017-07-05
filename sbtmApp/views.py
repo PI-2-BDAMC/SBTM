@@ -45,9 +45,10 @@ def sendMessage():
   print "received data:", data
 
 def chart_data_json(request):
-    data = []
+    data = {}
     params = request.GET
     name = params.get('name', '')
+    test_id = params.get('test_id', 0)
 
     if name == 'tmp_sensor':
       data = ChartData.get_temperature_sensor_data(request.user)
@@ -63,6 +64,9 @@ def chart_data_json(request):
 
     elif name == 'pressure_sensor':
       data = ChartData.get_air_comsumption(request.user)
+
+    elif name == 'temperature_pressure_0':
+      data['chart_data'] = ChartData.get_pressure_sensor_0_data(request.user, test_id)
 
     return HttpResponse(json.dumps(data), content_type='application/json')
 
