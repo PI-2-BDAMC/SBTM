@@ -55,6 +55,12 @@ def chart_data_json(request):
     elif name == 'rpm_sensor':
       data = ChartData.get_rpm_sensor_data(request.user)
 
+    elif name == 'fuel_comsumption':
+      data = ChartData.get_fuel_comsumption(request.user)
+
+    elif name == 'admission_temperature':
+      data = ChartData.get_admission_temperature(request.user)
+
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 def data_from_sensors(request):

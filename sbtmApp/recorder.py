@@ -17,7 +17,7 @@ class Recorder(object):
 
 	    while True:
 	        data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-	        self.createSensorObjects(data, user)
+	        #self.createSensorObjects(data, user)
 
 	def createSensorObjects(self, data_from_rasp, user):
 
@@ -32,4 +32,8 @@ class Recorder(object):
 		elif sensor_id in range(6, 11):
 			value = data_from_rasp.strip(str(sensor_id)).strip(".").strip(" ")
 			benchtest.temperaturesensor_set.create(valuePressure=value, localSensor=sensor_id)
+
+		elif sensor_id == 12:
+			value = data_from_rasp.strip(str(sensor_id)).strip(".").strip(" ")
+			benchtest.rpmsensor_set.create(valueRPM=value)
 			
